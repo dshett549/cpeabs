@@ -361,7 +361,6 @@ void populatePersistenceData()
         cJSON *pItem = cJSON_GetObjectItem(pParser, pPartnerId);
         cJSON *name = cJSON_CreateString("true");
         cJSON_AddItemToObject(pItem, WEBCFG_RFC_PARAM, name);
-        char *pValue2 = cJSON_Print(pItem);
 
 
         {
