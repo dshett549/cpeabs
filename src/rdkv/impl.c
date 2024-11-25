@@ -46,7 +46,7 @@
 #define PARAM_RFC_ENABLE "eRT.com.cisco.spvtg.ccsp.webpa.WebConfigRfcEnable"
 
 #define WEBCFG_PARTNER_JSON_FILE "/etc/partners_defaults_webcfg_video.json"
-#define WEBCFG_DB_STORE          "/opt/.webconfig.json"
+#define WEBCFG_DB_STORE          "/opt/secure/webconfig/webcfg.json"
 
 #define RETURN_OK 0
 #define RETURN_ERR -1
@@ -361,7 +361,6 @@ void populatePersistenceData()
         cJSON *pItem = cJSON_GetObjectItem(pParser, pPartnerId);
         cJSON *name = cJSON_CreateString("true");
         cJSON_AddItemToObject(pItem, WEBCFG_RFC_PARAM, name);
-        char *pValue2 = cJSON_Print(pItem);
 
 
         {
@@ -372,7 +371,6 @@ void populatePersistenceData()
             snprintf(webCfgPersist.m_url, 1024, "%s", cJSON_GetStringValue(pUrl));
             snprintf(webCfgPersist.m_teleSuplUrl, 1024, "%s", cJSON_GetStringValue(pTeleSuplUrl));
         }
-        writeToFile(pValue2);
     }
 }
 
