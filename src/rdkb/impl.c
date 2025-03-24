@@ -187,7 +187,7 @@ char* get_deviceWanMAC()
 
 char* get_deviceMAC()
 {
-	if(strlen(deviceMAC) != 0)
+	if(strlen(deviceMAC) != 0 && strncmp(deviceMAC, "000000000000", 12) != 0)
 	{
 		CpeabsDebug("deviceMAC returned %s\n", deviceMAC);
 		return deviceMAC;
@@ -202,9 +202,10 @@ char* get_deviceMAC()
 	    macIDToLower(deviceMACValue, deviceMAC);
 	    CpeabsDebug("deviceMAC: %s\n",deviceMAC);
 	    CPEABS_FREE(macID);
+	    return deviceMAC;
 	}
 	CpeabsDebug("deviceMAC returned from lib is %s\n", deviceMAC);
-	return deviceMAC;
+	return NULL;
 }
 
 long getTimeOffset()
@@ -469,6 +470,8 @@ char * getParamValue(char *paramName)
 			CPEABS_FREE(parametervalArr[0]->name);
 			CPEABS_FREE(parametervalArr[0]->value);
 			CPEABS_FREE(parametervalArr[0]);
+			CPEABS_FREE(parametervalArr);
+			return paramValue;
 		}
 		else
 		{
@@ -477,7 +480,7 @@ char * getParamValue(char *paramName)
 		}
 		CPEABS_FREE(parametervalArr);
 		CpeabsDebug("getParamValue : paramValue is %s\n", paramValue);
-		return paramValue;
+		return NULL;
 	}
 	CpeabsError("getParamValue : returns NULL\n");
 	return NULL;

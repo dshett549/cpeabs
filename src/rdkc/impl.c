@@ -168,7 +168,7 @@ void macIDToLower(char macValue[],char macConverted[])
 
 char* get_deviceMAC()
 {
-    if(strlen(deviceMAC) != 0)
+    if(strlen(deviceMAC) != 0 && strncmp(deviceMAC, "000000000000", 12) != 0)
     {
         WebcfgDebug("deviceMAC returned %s\n", deviceMAC);
         return deviceMAC;
@@ -183,9 +183,10 @@ char* get_deviceMAC()
         macIDToLower(deviceMACValue, deviceMAC);
         WebcfgDebug("deviceMAC: %s\n",deviceMAC);
         CPEABS_FREE(macID);
+        return deviceMAC;
     }
     WebcfgDebug("deviceMAC returned from lib is %s\n", deviceMAC);
-    return deviceMAC;
+    return NULL;
 }
 
 char* get_deviceWanMAC()
@@ -296,6 +297,8 @@ char * getParamValue(char *paramName)
         CPEABS_FREE(parametervalArr[0]->name);
         CPEABS_FREE(parametervalArr[0]->value);
         CPEABS_FREE(parametervalArr[0]);
+        CPEABS_FREE(parametervalArr);
+        return paramValue;
     }
     else
     {
@@ -304,7 +307,7 @@ char * getParamValue(char *paramName)
     }
     CPEABS_FREE(parametervalArr);
     WebcfgDebug("getParamValue : paramValue is %s\n", paramValue);
-    return paramValue;
+    return NULL;
 }
 
 void writeToFile(char* pText)
@@ -389,13 +392,6 @@ int Get_Webconfig_URL( char *pString)
 int Set_Webconfig_URL( char *pString)
 {
     snprintf(webCfgPersist.m_url, 1024, "%s", pString);
-    cJSON * pWebCfg = convertWebCfgDataToJson();
-    if (pWebCfg)
-    {
-            char* pString = cJSON_Print(pWebCfg);
-            writeToFile(pString);
-            cJSON_Delete(pWebCfg);
-    }
 
     return RETURN_OK;
 }
@@ -417,13 +413,6 @@ int Set_Supplementary_URL( char *name, char *pString)
 {
     (void) name;
     snprintf(webCfgPersist.m_teleSuplUrl, 1024, "%s", pString);
-    cJSON * pWebCfg = convertWebCfgDataToJson();
-    if (pWebCfg)
-    {
-            char* pString = cJSON_Print(pWebCfg);
-            writeToFile(pString);
-            cJSON_Delete(pWebCfg);
-    }
     return RETURN_OK;
 }
 
